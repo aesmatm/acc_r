@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h3>{{ report_type|title }} تقرير</h3>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="date_from">من تاريخ:</label>
+                            <input type="date" name="date_from" id="date_from" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="date_to">إلى تاريخ:</label>
+                            <input type="date" name="date_to" id="date_to" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-file-pdf"></i> إنشاء التقرير
+                    </button>
+                    <a href="{% url 'reports:report_list' %}" class="btn btn-secondary">
+                        <i class="fas fa-list"></i> قائمة التقارير
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

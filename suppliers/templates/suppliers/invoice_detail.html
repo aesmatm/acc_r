@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}فاتورة رقم {{ invoice.invoice_number }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 mb-0">فاتورة رقم {{ invoice.invoice_number }}</h1>
+        <div class="btn-toolbar">
+            <a href="{% url 'suppliers:invoice_print' invoice.pk %}" target="_blank" class="btn btn-primary me-2">
+                <i class="fas fa-print"></i> طباعة
+            </a>
+            {% if perms.suppliers.change_invoice %}
+            <a href="{% url 'admin:suppliers_invoice_change' invoice.pk %}" class="btn btn-secondary me-2">
+                <i class="fas fa-edit"></i> تعديل
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <!-- Invoice Header -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5 class="text-primary">معلومات المورد</h5>
+                    <div class="mb-3">
+                        <p class="mb-1"><strong>المورد:</strong> {{ invoice.supplier.name }}</p>
+                        <p class="mb-1"><strong>العنوان:</strong> {{ invoice.supplier.address|default:"-" }}</p>
+                        <p class="mb-1"><strong>الهاتف:</strong> {{ invoice.supplier.phone }}</p>
+                        <p class="mb-1"><strong>البريد الإلكتروني:</strong> {{ invoice.supplier.email|default:"-" }}</p>
+                    </div>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5 class="text-primary">معلومات الفاتورة</h5>
+                    <div class="mb-3">
+                        <p class="mb-1"><strong>رقم الفاتورة:</strong> {{ invoice.invoice_number }}</p>
+                        <p class="mb-1"><strong>التاريخ:</strong> {{ invoice.invoice_date|date:"Y/m/d" }}</p>
+                        <p class="mb-1"><strong>تاريخ الاستحقاق:</strong> {{ invoice.due_date|date:"Y/m/d" }}</p>
+                        <p class="mb-1"><strong>الحالة:</strong> {{ invoice.get_status_display }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Info -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h5 class="text-primary">معلومات المشروع</h5>
+                    <div class="mb-3">
+                        <p class="mb-1"><strong>المشروع:</strong> {{ invoice.project.name }}</p>
+                        <p class="mb-1"><strong>الوصف:</strong> {{ invoice.description|default:"-" }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoice Items -->
+            <h5 class="text-primary mb-3">بنود الفاتورة</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>الوصف</th>
+                            <th>الكمية</th>
+                            <th>سعر الوحدة</th>
+                            <th>الإجمالي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in invoice.items.all %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.description }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.unit_price }}</td>
+                            <td>{{ item.get_total }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot class="table-light">
+                        <tr>
+                            <td colspan="4" class="text-end"><strong>المجموع</strong></td>
+                            <td>{{ invoice.total_amount }}</td>
+                        </tr>
+                        {% if invoice.tax_amount %}
+                        <tr>
+                            <td colspan="4" class="text-end"><strong>الضريبة</strong></td>
+                            <td>{{ invoice.tax_amount }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="text-end"><strong>الإجمالي مع الضريبة</strong></td>
+                            <td>{{ invoice.total_amount_with_tax }}</td>
+                        </tr>
+                        {% endif %}
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <h5 class="text-primary">ملاحظات</h5>
+                    <p>{{ invoice.description|default:"لا توجد ملاحظات" }}</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5 class="text-primary">معلومات إضافية</h5>
+                    <p class="mb-1"><strong>تم الإنشاء بواسطة:</strong> {{ invoice.created_by.get_full_name }}</p>
+                    <p class="mb-1"><strong>تاريخ الإنشاء:</strong> {{ invoice.created_at|date:"Y/m/d H:i" }}</p>
+                    <p class="mb-1"><strong>آخر تحديث:</strong> {{ invoice.updated_at|date:"Y/m/d H:i" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .table th {
+        background-color: #e5f2ed;
+    }
+    .btn-toolbar .btn {
+        min-width: 100px;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ object.name }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+    <h1 class="h2 text-primary">{{ object.name }}</h1>
+    <div class="btn-toolbar">
+        <a href="{{ object.get_edit_url }}" class="btn btn-primary me-2">
+            <i class="fas fa-edit"></i> تعديل
+        </a>
+        <a href="{{ object.get_delete_url }}" class="btn btn-outline-danger">
+            <i class="fas fa-trash"></i> حذف
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="card-title mb-0">التفاصيل</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    {% for field in object.get_fields %}
+                    <dt class="col-sm-3">{{ field.label }}</dt>
+                    <dd class="col-sm-9">{{ field.value|default:"-" }}</dd>
+                    {% endfor %}
+                </dl>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="card-title mb-0">معلومات إضافية</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        تاريخ الإنشاء
+                        <span class="text-muted">{{ object.created_at|date:"Y/m/d" }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        آخر تحديث
+                        <span class="text-muted">{{ object.updated_at|date:"Y/m/d" }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        بواسطة
+                        <span class="text-primary">{{ object.created_by.get_full_name }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        {% if object.related_items %}
+        <div class="card shadow-sm mt-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">العناصر المرتبطة</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    {% for item in object.related_items %}
+                    <a href="{{ item.get_absolute_url }}" class="list-group-item list-group-item-action">
+                        {{ item.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

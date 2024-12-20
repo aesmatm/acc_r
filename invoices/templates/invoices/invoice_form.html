@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} | {{ block.super }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .formset-item {
+        border: 1px solid #dee2e6;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 0.25rem;
+    }
+    .delete-row {
+        color: #dc3545;
+        cursor: pointer;
+    }
+    .add-row {
+        margin-top: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">{{ title }}</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="invoice-form">
+                        {% csrf_token %}
+                        
+                        <!-- Invoice Details -->
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="{{ form.number.id_for_label }}">{{ form.number.label }}</label>
+                                    {{ form.number }}
+                                    {% if form.number.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.number.errors }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="{{ form.date.id_for_label }}">{{ form.date.label }}</label>
+                                    {{ form.date }}
+                                    {% if form.date.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.date.errors }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.supplier.id_for_label }}">{{ form.supplier.label }}</label>
+                                    {{ form.supplier }}
+                                    {% if form.supplier.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.supplier.errors }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Invoice Items -->
+                        <h5 class="mb-3">بنود الفاتورة</h5>
+                        {{ formset.management_form }}
+                        <div id="invoice-items">
+                            {% for form in formset %}
+                            <div class="formset-item">
+                                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+                                            {{ form.description }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="{{ form.quantity.id_for_label }}">{{ form.quantity.label }}</label>
+                                            {{ form.quantity }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="{{ form.price.id_for_label }}">{{ form.price.label }}</label>
+                                            {{ form.price }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if form.instance.pk %}
+                                <div class="text-end mt-2">
+                                    <a href="#" class="delete-row" onclick="toggleDelete(this)">
+                                        <i class="fas fa-trash-alt"></i> حذف
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <button type="button" class="btn btn-outline-primary add-row" onclick="addForm()">
+                            <i class="fas fa-plus"></i> إضافة بند
+                        </button>
+
+                        <!-- Notes -->
+                        <div class="form-group mt-4">
+                            <label for="{{ form.notes.id_for_label }}">{{ form.notes.label }}</label>
+                            {{ form.notes }}
+                            {% if form.notes.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.notes.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="mt-4 text-end">
+                            <a href="{% url 'invoices:invoice_list' %}" class="btn btn-secondary">إلغاء</a>
+                            <button type="submit" class="btn btn-primary">حفظ الفاتورة</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+<script>
+    let formCount = {{ formset.total_form_count }};
+    const maxForms = {{ formset.max_num }};
+    const minForms = {{ formset.min_num }};
+    const formRegex = RegExp(`form-(\\d+)-`,'g');
+    
+    function addForm() {
+        if (formCount < maxForms) {
+            const container = document.querySelector('#invoice-items');
+            const template = container.querySelector('.formset-item').cloneNode(true);
+            
+            template.innerHTML = template.innerHTML.replace(formRegex, `form-${formCount}-`);
+            const inputs = template.querySelectorAll('input');
+            inputs.forEach(input => input.value = '');
+            
+            container.appendChild(template);
+            
+            const totalForms = document.querySelector('#id_form-TOTAL_FORMS');
+            totalForms.value = ++formCount;
+        }
+    }
+
+    function toggleDelete(element) {
+        const item = element.closest('.formset-item');
+        const deleteCheckbox = item.querySelector('input[type="checkbox"]');
+        if (deleteCheckbox) {
+            deleteCheckbox.checked = !deleteCheckbox.checked;
+            item.style.opacity = deleteCheckbox.checked ? '0.5' : '1';
+        }
+    }
+</script>
+{% endblock %}

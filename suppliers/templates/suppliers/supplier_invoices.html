@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}فواتير {{ supplier.name }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'suppliers:supplier_list' %}">الموردين</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'suppliers:supplier_detail' supplier.pk %}">{{ supplier.name }}</a></li>
+            <li class="breadcrumb-item active">الفواتير</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white py-3">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h5 class="mb-0">فواتير {{ supplier.name }}</h5>
+                </div>
+                <div class="col-auto">
+                    <div class="btn-group">
+                        {% if perms.suppliers.add_invoice %}
+                        <a href="{% url 'admin:suppliers_invoice_add' %}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> فاتورة جديدة
+                        </a>
+                        {% endif %}
+                        <button type="button" class="btn btn-outline-primary" onclick="window.print()">
+                            <i class="fas fa-print"></i> طباعة القائمة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <!-- Summary Cards -->
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title mb-1">إجمالي الفواتير</h6>
+                                    <h3 class="mb-0">{{ invoices.count }}</h3>
+                                </div>
+                                <i class="fas fa-file-invoice fa-2x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title mb-1">إجمالي المبالغ</h6>
+                                    <h3 class="mb-0">{{ total_amount }}</h3>
+                                </div>
+                                <i class="fas fa-money-bill-wave fa-2x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoices Table -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>رقم الفاتورة</th>
+                            <th>التاريخ</th>
+                            <th>المشروع</th>
+                            <th>المبلغ</th>
+                            <th>الضريبة</th>
+                            <th>الإجمالي</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for invoice in invoices %}
+                        <tr>
+                            <td>
+                                <strong>{{ invoice.invoice_number }}</strong>
+                                {% if invoice.description %}
+                                <small class="d-block text-muted">{{ invoice.description|truncatechars:50 }}</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ invoice.invoice_date|date:"Y/m/d" }}
+                                {% if invoice.due_date %}
+                                <small class="d-block text-muted">يستحق: {{ invoice.due_date|date:"Y/m/d" }}</small>
+                                {% endif %}
+                            </td>
+                            <td>{{ invoice.project.name }}</td>
+                            <td>{{ invoice.total_amount }}</td>
+                            <td>{{ invoice.tax_amount|default:"-" }}</td>
+                            <td>{{ invoice.total_amount_with_tax }}</td>
+                            <td>
+                                <span class="badge bg-{{ invoice.status|yesno:'success,warning' }}">
+                                    {{ invoice.get_status_display }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{% url 'suppliers:invoice_detail' invoice.pk %}" class="btn btn-outline-primary" title="عرض">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{% url 'suppliers:invoice_print' invoice.pk %}" target="_blank" class="btn btn-outline-primary" title="طباعة">
+                                        <i class="fas fa-print"></i>
+                                    </a>
+                                    {% if perms.suppliers.change_invoice %}
+                                    <a href="{% url 'admin:suppliers_invoice_change' invoice.pk %}" class="btn btn-outline-secondary" title="تعديل">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center py-5">
+                                <div class="text-muted">
+                                    <i class="fas fa-file-invoice fa-3x mb-3"></i>
+                                    <h5>لا توجد فواتير</h5>
+                                    <p class="mb-0">لم يتم إضافة أي فواتير لهذا المورد بعد</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        .btn-group, .breadcrumb {
+            display: none !important;
+        }
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+    }
+    .badge {
+        font-size: 0.8rem;
+    }
+    .table th {
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %}

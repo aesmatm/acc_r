@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Convert SVG to PNG</title>
+</head>
+<body>
+    <!-- SVG Image -->
+    <img src="logo.png" id="svgImage" style="display: none;">
+    
+    <!-- Canvas for conversion -->
+    <canvas id="canvas" width="200" height="200" style="display: none;"></canvas>
+    
+    <script>
+        window.onload = function() {
+            const img = document.getElementById('svgImage');
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0);
+                
+                // Convert to PNG and download
+                const pngData = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.download = 'logo.png';
+                link.href = pngData;
+                link.click();
+            };
+        };
+    </script>
+</body>
+</html>

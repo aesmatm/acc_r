@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}قائمة الموردين | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 mb-0">قائمة الموردين</h1>
+        {% if perms.suppliers.add_supplier %}
+        <a href="{% url 'admin:suppliers_supplier_add' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> إضافة مورد جديد
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        {% for supplier in suppliers %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ supplier.name }}</h5>
+                    <p class="card-text text-muted mb-2">{{ supplier.code }}</p>
+                    
+                    <div class="mb-3">
+                        {% if supplier.phone %}
+                        <p class="mb-1">
+                            <i class="fas fa-phone text-primary"></i>
+                            {{ supplier.phone }}
+                        </p>
+                        {% endif %}
+                        {% if supplier.email %}
+                        <p class="mb-1">
+                            <i class="fas fa-envelope text-primary"></i>
+                            {{ supplier.email }}
+                        </p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <div class="p-2 bg-light rounded">
+                                <small class="d-block text-muted">عدد الفواتير</small>
+                                <strong>{{ supplier.total_invoices }}</strong>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 bg-light rounded">
+                                <small class="d-block text-muted">إجمالي المبالغ</small>
+                                <strong>{{ supplier.total_amount }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group w-100">
+                        <a href="{% url 'suppliers:supplier_detail' supplier.pk %}" class="btn btn-outline-primary">
+                            <i class="fas fa-info-circle"></i> التفاصيل
+                        </a>
+                        <a href="{% url 'suppliers:supplier_invoices' supplier.pk %}" class="btn btn-outline-primary">
+                            <i class="fas fa-file-invoice"></i> الفواتير
+                        </a>
+                        {% if perms.suppliers.change_supplier %}
+                        <a href="{% url 'admin:suppliers_supplier_change' supplier.pk %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <i class="fas fa-info-circle fa-2x mb-3"></i>
+                <p class="mb-0">لا يوجد موردين حالياً</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .card {
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    .btn-group .btn {
+        flex: 1;
+    }
+    .fas {
+        width: 20px;
+    }
+</style>
+{% endblock %}

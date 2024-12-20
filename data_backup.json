@@ -1,0 +1,25 @@
+[
+{
+  "model": "sessions.session",
+  "pk": "i7e7g3v7u9dlx3izxpmjsgv9sjwosmqc",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAoMFCX7j0DmWGmtmpoUtqV8e7apAvd_vfef6mM2zrmrcmSJ1ZnZdXpdyMsD6k74DvW26zLXNdlIr0r-qBNX2eW5-Vw_w5GbOO3BjJYxBJQYMu970xw0Ql7EwQBukKUAoIDJ70pHhwPKUok6pwtJg3q_QHo9jfz:1tOHXB:f6B76us1TDlASCY2h0ra1fyoV-RidZxpU7aXUuzYwlY",
+    "expire_date": "2025-01-02T14:29:49.226Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "niipy3dbpy8qd5afb9gr792ghtrr6gcg",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAoMFCX7j0DmWGmtmpoUtqV8e7apAvd_vfef6mM2zrmrcmSJ1ZnZdXpdyMsD6k74DvW26zLXNdlIr0r-qBNX2eW5-Vw_w5GbOO3BjJYxBJQYMu970xw0Ql7EwQBukKUAoIDJ70pHhwPKUok6pwtJg3q_QHo9jfz:1tNzuj:Ec0rzkJfyGxaygumga5_qPIfpU7ud1j0hY0Kz3dIVxI",
+    "expire_date": "2025-01-01T19:40:57.805Z"
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$600000$cUvMVs3kDHqnovKhYS5ALN$Yn2WbNALPq5M0f1qU9CbT6wDdlS+Pl2LoLlflUREnfE=",
+    "last_login": "2024-12-19T14:29:49.221Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": 

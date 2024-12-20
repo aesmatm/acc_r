@@ -1,0 +1,72 @@
+:root {
+    --primary: #2a8241;
+    --secondary: #1f6431;
+}
+
+#header {
+    background: var(--primary);
+    height: auto;
+    padding: 15px 40px;
+}
+
+#site-name {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#site-name h1 {
+    margin: 0;
+    font-size: 24px;
+    color: white;
+}
+
+#site-name img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.module h2, .module caption, .inline-group h2 {
+    background: var(--primary);
+}
+
+div.breadcrumbs {
+    background: var(--secondary);
+}
+
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: var(--primary);
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover {
+    background: var(--primary);
+    opacity: 0.8;
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    background: var(--primary);
+}
+
+.button.default:hover, input[type=submit].default:hover {
+    background: var(--primary);
+    opacity: 0.8;
+}
+
+.user-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.password-change-link {
+    background: #ffffff;
+    color: var(--primary) !important;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.password-change-link:hover {
+    background: #f8f9fa;
+}

@@ -1,0 +1,119 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}">
+<style>
+    .report-form {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background: white;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 4px;
+    }
+    
+    .form-row {
+        padding: 10px 0;
+    }
+    
+    .form-row label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    
+    .form-row input[type="date"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    
+    .submit-row {
+        text-align: left;
+        margin-top: 20px;
+        padding: 20px;
+        background: #f8f8f8;
+        border-radius: 4px;
+    }
+    
+    .submit-row input[type="submit"] {
+        background: #417690;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    .submit-row input[type="submit"]:hover {
+        background: #205067;
+    }
+    
+    .report-type-select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+    
+    .help-text {
+        color: #666;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="report-form">
+    <h1>إنشاء تقرير جديد</h1>
+    
+    <form method="post" id="report-form">
+        {% csrf_token %}
+        
+        <div class="form-row">
+            <label for="report_type">نوع التقرير:</label>
+            <select name="report_type" id="report_type" class="report-type-select" required>
+                <option value="">اختر نوع التقرير</option>
+                <option value="inventory" {% if report_type == 'inventory' %}selected{% endif %}>تقرير المخزون</option>
+                <option value="invoices" {% if report_type == 'invoices' %}selected{% endif %}>تقرير الفواتير</option>
+                <option value="suppliers" {% if report_type == 'suppliers' %}selected{% endif %}>تقرير الموردين</option>
+                <option value="projects" {% if report_type == 'projects' %}selected{% endif %}>تقرير المشاريع</option>
+                <option value="finance" {% if report_type == 'finance' %}selected{% endif %}>التقرير المالي</option>
+            </select>
+            <p class="help-text">اختر نوع التقرير الذي تريد إنشاءه</p>
+        </div>
+        
+        <div class="form-row">
+            <label for="date_from">من تاريخ:</label>
+            <input type="date" name="date_from" id="date_from" required>
+        </div>
+        
+        <div class="form-row">
+            <label for="date_to">إلى تاريخ:</label>
+            <input type="date" name="date_to" id="date_to" required>
+        </div>
+        
+        <div class="submit-row">
+            <input type="submit" value="إنشاء التقرير">
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('report-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var reportType = document.getElementById('report_type').value;
+        if (reportType) {
+            this.action = "{% url 'reports:generate_report' 'TYPE' %}".replace('TYPE', reportType);
+            this.submit();
+        } else {
+            alert('الرجاء اختيار نوع التقرير');
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | الريف الاخضر {% endblock %}
+
+{% block extrastyle %}
+<style>
+    :root {
+        --primary: #2a8241;
+        --secondary: #1f6431;
+        --accent: #e5f2ed;
+    }
+    
+    /* Link Colors */
+    #header {
+        background: var(--primary);
+        color: #fff;
+    }
+    
+    #branding h1 {
+        color: #fff;
+    }
+    
+    #branding h1 a:link, #branding h1 a:visited {
+        color: #fff;
+    }
+    
+    div.breadcrumbs {
+        background: var(--secondary);
+        color: #fff;
+    }
+    
+    div.breadcrumbs a {
+        color: #fff !important;
+    }
+    
+    .module h2, .module caption, .inline-group h2 {
+        background: var(--primary);
+        color: #fff;
+    }
+    
+    a:link, a:visited {
+        color: var(--primary);
+    }
+    
+    .button, input[type=submit], input[type=button], .submit-row input, a.button {
+        background: var(--primary);
+    }
+    
+    .button:hover, input[type=submit]:hover, input[type=button]:hover {
+        background: var(--secondary);
+    }
+    
+    .button.default, input[type=submit].default, .submit-row input.default {
+        background: var(--primary);
+    }
+    
+    .button.default:hover, input[type=submit].default:hover {
+        background: var(--secondary);
+    }
+    
+    .submit-row a.deletelink {
+        background: #ba2121;
+    }
+    
+    .submit-row a.deletelink:hover {
+        background: #a41515;
+    }
+    
+    /* Table Colors */
+    thead th {
+        background: var(--accent);
+        color: var(--primary);
+    }
+    
+    tr:nth-child(even) {
+        background: #f9f9f9;
+    }
+    
+    tr:hover {
+        background: var(--accent);
+    }
+    
+    /* Form Colors */
+    .form-row.errors {
+        border-bottom-color: #ba2121;
+    }
+    
+    ul.errorlist {
+        color: #ba2121;
+    }
+    
+    /* Messages */
+    .success {
+        background: var(--accent);
+        color: var(--primary);
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <i class="fas fa-building"></i>
+        الريف الاخضر
+    </a>
+</h1>
+{% endblock %}
+
+{% block usertools %}
+<div class="user-tools">
+    {% if has_permission %}
+    <div class="password-change-container">
+        <a href="{% url 'accounts:password_change' %}" class="password-change-link">تغيير كلمة المرور</a>
+    </div>
+    {% endif %}
+    {{ block.super }}
+</div>
+{% endblock %}

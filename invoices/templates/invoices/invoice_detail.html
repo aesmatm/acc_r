@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}فاتورة رقم {{ invoice.number }} | {{ block.super }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+        .print-only {
+            display: block !important;
+        }
+        .container {
+            width: 100% !important;
+            max-width: none !important;
+        }
+        .invoice-header {
+            border-bottom: 2px solid #2a8241;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+        .invoice-footer {
+            border-top: 2px solid #2a8241;
+            margin-top: 2rem;
+            padding-top: 1rem;
+        }
+    }
+    
+    .print-only {
+        display: none;
+    }
+    
+    .invoice-logo {
+        max-height: 100px;
+    }
+    
+    .invoice-details {
+        font-size: 0.9rem;
+    }
+    
+    .table-items th {
+        background-color: #e5f2ed;
+    }
+    
+    .subtotal-row {
+        font-weight: bold;
+        background-color: #e5f2ed;
+    }
+    
+    .tax-row {
+        font-weight: bold;
+        background-color: #e5f2ed;
+    }
+    
+    .total-row {
+        font-weight: bold;
+        background-color: #e5f2ed;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <!-- Print Button -->
+    <div class="text-end mb-4 no-print">
+        <button onclick="window.print()" class="btn btn-primary">
+            <i class="fas fa-print me-2"></i>
+            طباعة الفاتورة
+        </button>
+    </div>
+    
+    <!-- Invoice Content -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <!-- Invoice Header -->
+            <div class="invoice-header row align-items-center">
+                <div class="col-6">
+                    <img src="{% static 'images/logo.png' %}" alt="الريف المصري" class="invoice-logo">
+                </div>
+                <div class="col-6 text-start">
+                    <h1 class="h3 text-primary mb-1">فاتورة رقم: {{ invoice.number }}</h1>
+                    <p class="text-muted mb-0">التاريخ: {{ invoice.date|date:"Y/m/d" }}</p>
+                </div>
+            </div>
+            
+            <!-- Company & Client Info -->
+            <div class="row mb-4">
+                <div class="col-6">
+                    <h5 class="text-primary">معلومات الشركة</h5>
+                    <div class="invoice-details">
+                        <p class="mb-1">{{ company.name }}</p>
+                        <p class="mb-1">العنوان: {{ company.address }}</p>
+                        <p class="mb-1">الهاتف: {{ company.phone }}</p>
+                        {% if company.mobile %}
+                        <p class="mb-1">الجوال: {{ company.mobile }}</p>
+                        {% endif %}
+                        <p class="mb-1">البريد الإلكتروني: {{ company.email }}</p>
+                        {% if company.tax_number %}
+                        <p class="mb-1">الرقم الضريبي: {{ company.tax_number }}</p>
+                        {% endif %}
+                        {% if company.commercial_record %}
+                        <p class="mb-1">السجل التجاري: {{ company.commercial_record }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-6">
+                    <h5 class="text-primary">معلومات المورد</h5>
+                    <div class="invoice-details">
+                        <p class="mb-1">{{ invoice.supplier.name }}</p>
+                        <p class="mb-1">العنوان: {{ invoice.supplier.address }}</p>
+                        <p class="mb-1">الهاتف: {{ invoice.supplier.phone }}</p>
+                        <p class="mb-1">البريد الإلكتروني: {{ invoice.supplier.email }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Invoice Items -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-items">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>الوصف</th>
+                            <th>الكمية</th>
+                            <th>السعر</th>
+                            <th>الإجمالي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in invoice.items.all %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.description }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.price }}</td>
+                            <td>{{ item.total }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="subtotal-row">
+                            <td colspan="4" class="text-start">المجموع قبل الضريبة</td>
+                            <td>{{ invoice.subtotal }}</td>
+                        </tr>
+                        <tr class="tax-row">
+                            <td colspan="2" class="text-start">حالة الضريبة</td>
+                            <td colspan="2">{{ invoice.get_tax_status_display }}</td>
+                            <td>{{ invoice.tax_amount }}</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="4" class="text-start">الإجمالي شامل الضريبة</td>
+                            <td>{{ invoice.total }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Invoice Footer -->
+            <div class="invoice-footer">
+                <div class="row">
+                    <div class="col-6">
+                        <h6 class="text-primary">ملاحظات</h6>
+                        <p class="small">{{ invoice.notes|default:"لا توجد ملاحظات" }}</p>
+                    </div>
+                    <div class="col-6 text-start">
+                        <h6 class="text-primary">التوقيع</h6>
+                        <div style="height: 60px;"></div>
+                        <p class="mb-0">{{ invoice.created_by.get_full_name }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+{% endblock %}

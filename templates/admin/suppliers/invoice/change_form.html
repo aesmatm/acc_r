@@ -1,0 +1,13 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% block object-tools-items %}
+    {% if original.pk %}
+    <li>
+        <a href="{% url 'invoices:invoice_detail' original.pk %}" target="_blank" class="btn" style="background-color: #027448; color: white;">
+            <i class="fas fa-print"></i> طباعة الفاتورة
+        </a>
+    </li>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}

@@ -1,0 +1,180 @@
+:root {
+    --primary: #027448;
+    --primary-light: #038456;
+    --primary-lighter: #049463;
+    --primary-dark: #026540;
+    --primary-darker: #015435;
+    --secondary: #e4e7eb;
+    --text-light: #ffffff;
+    --text-dark: #2d3748;
+    --background-light: #f7f9fc;
+    --border-color: #e2e8f0;
+}
+
+/* Common Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+}
+
+body {
+    background-color: var(--background-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+/* Header Styles */
+#header {
+    background: var(--primary);
+    color: var(--text-light);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#branding h1 {
+    color: var(--text-light);
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.logo {
+    height: 100px;
+    margin-right: 1rem;
+    vertical-align: middle;
+}
+
+/* Navigation */
+.breadcrumbs {
+    background: var(--primary-dark);
+    color: var(--text-light);
+    padding: 0.75rem 2rem;
+}
+
+.breadcrumbs a {
+    color: var(--text-light);
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    text-decoration: underline;
+}
+
+/* Content Area */
+#content {
+    padding: 2rem;
+}
+
+/* Cards and Modules */
+.module {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.module h2 {
+    background: var(--primary);
+    color: var(--text-light);
+    padding: 1rem;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+/* Forms */
+form .form-row {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(2, 116, 72, 0.1);
+    outline: none;
+}
+
+/* Buttons */
+.button, input[type=submit], input[type=button], .submit-row input {
+    background: var(--primary);
+    color: var(--text-light);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover {
+    background: var(--primary-light);
+}
+
+.button.default {
+    background: var(--primary-dark);
+    font-weight: bold;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: var(--primary);
+    color: var(--text-light);
+    padding: 1rem;
+    text-align: right;
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+tr:hover {
+    background: rgba(2, 116, 72, 0.05);
+}
+
+/* Messages and Alerts */
+.message {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+}
+
+.success {
+    background: var(--primary-lighter);
+    color: var(--text-light);
+}
+
+.error {
+    background: #dc3545;
+    color: var(--text-light);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #header {
+        padding: 1rem;
+    }
+    
+    #content {
+        padding: 1rem;
+    }
+    
+    .module {
+        margin-bottom: 1rem;
+    }
+}

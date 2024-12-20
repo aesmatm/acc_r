@@ -1,0 +1,331 @@
+/* Custom Admin Styles */
+:root {
+    --primary-color: #2a8241;
+    --secondary-color: #e5f2ed;
+}
+
+/* Header Customization */
+#header {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Module Headers */
+.module h2, .module caption {
+    background: var(--primary-color);
+    color: white;
+    padding: 8px;
+    border-radius: 4px 4px 0 0;
+}
+
+/* Links */
+a:link, a:visited {
+    color: var(--primary-color);
+}
+
+/* Tables */
+.module table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.module table th {
+    background-color: var(--secondary-color);
+}
+
+.module table td, .module table th {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+/* Buttons */
+.button, input[type=submit], input[type=button], .submit-row input {
+    background: var(--primary-color);
+    color: white;
+    border-radius: 4px;
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover {
+    background: #1e5c2e;
+}
+
+.button {
+    background: #79aec8;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.button:hover {
+    background: #417690;
+    color: #fff;
+    text-decoration: none;
+}
+
+.button i {
+    font-size: 14px;
+}
+
+/* Report View Button */
+.column-view_report_button,
+.column-view_report_button a,
+.column-view_report_button a:link,
+.column-view_report_button a:visited {
+    color: white !important;
+}
+
+.column-view_report_button a.button {
+    color: white !important;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s;
+}
+
+.column-view_report_button a.button:hover,
+.column-view_report_button a.button:active,
+.column-view_report_button a.button:focus {
+    text-decoration: none;
+    color: white !important;
+}
+
+.column-view_report_button a.button i {
+    font-size: 14px;
+    color: white !important;
+}
+
+/* Override Django Admin Styles */
+#changelist-form .column-view_report_button a {
+    color: white !important;
+}
+
+table#result_list .column-view_report_button a {
+    color: white !important;
+}
+
+/* Dashboard Modules */
+.module {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Company Info Section */
+.company-info {
+    background: white;
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.company-info img {
+    max-width: 150px;
+    height: auto;
+}
+
+.field-view_report_button {
+    color: white !important;
+}
+
+.field-view_report_button a.button {
+    color: white !important;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s;
+}
+
+.field-view_report_button a.button:hover {
+    text-decoration: none;
+    color: white !important;
+}
+
+.field-view_report_button a.button i {
+    font-size: 14px;
+    color: white !important;
+}
+
+/* Dashboard Layout */
+#content-main {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.app-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 250px;
+}
+
+.app-item {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.app-item h2 {
+    background: #f8f9fa;
+    color: #333;
+    padding: 15px;
+    margin: 0;
+    font-size: 16px;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.app-item h2 i {
+    width: 20px;
+    text-align: center;
+    color: #417690;
+}
+
+.app-item table {
+    width: 100%;
+}
+
+.app-item tr {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.app-item tr:last-child {
+    border-bottom: none;
+}
+
+.app-item th {
+    padding: 12px 15px;
+}
+
+.app-item td {
+    padding: 12px 15px;
+}
+
+.app-item a {
+    color: #417690;
+    text-decoration: none;
+    display: block;
+    transition: color 0.3s;
+}
+
+.app-item a:hover {
+    color: #2b5177;
+}
+
+/* Recent Actions */
+#recent-actions-module {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+#recent-actions-module h2 {
+    background: #f8f9fa;
+    color: #333;
+    padding: 15px;
+    margin: 0;
+    font-size: 16px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+#recent-actions-module .module {
+    border: none;
+    background: none;
+}
+
+#recent-actions-module h3 {
+    padding: 12px 15px;
+    margin: 0;
+    font-size: 14px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#recent-actions-module ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#recent-actions-module li {
+    padding: 10px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#recent-actions-module li:last-child {
+    border-bottom: none;
+}
+
+/* Quick Actions */
+.quick-actions {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.quick-action-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.3s;
+}
+
+.quick-action-card:hover {
+    transform: translateY(-2px);
+}
+
+.quick-action-icon {
+    width: 40px;
+    height: 40px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #417690;
+}
+
+.quick-action-content {
+    flex: 1;
+}
+
+.quick-action-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 5px 0;
+}
+
+.quick-action-description {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+}

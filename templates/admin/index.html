@@ -1,0 +1,89 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    .app-group {
+      margin-bottom: 20px;
+      background: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .app-group h2 {
+      background: var(--primary);
+      color: white;
+      padding: 10px 15px;
+      margin: 0;
+      border-radius: 4px 4px 0 0;
+      display: flex;
+      align-items: center;
+    }
+    .app-group h2 i {
+      margin-left: 10px;
+    }
+    .app-group .app-list {
+      padding: 15px;
+    }
+    .model-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .model-list li {
+      margin: 5px 0;
+      padding: 8px;
+      border-bottom: 1px solid #eee;
+    }
+    .model-list li:last-child {
+      border-bottom: none;
+    }
+    .model-link {
+      display: flex;
+      align-items: center;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .model-link:hover {
+      color: var(--primary-dark);
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  {% if app_list %}
+    <div class="app-groups">
+      {% for app in app_list %}
+        <div class="app-group">
+          <h2>
+            <i class="{{ app.icon }}"></i>
+            {{ app.name }}
+          </h2>
+          <div class="app-list">
+            <ul class="model-list">
+              {% for model in app.models %}
+                {% if model.perms.view %}
+                  <li>
+                    <a href="{{ model.admin_url }}" class="model-link">
+                      {{ model.name }}
+                    </a>
+                    {% if model.perms.add %}
+                      <a href="{{ model.add_url }}" class="addlink">
+                        {% translate "إضافة" %}
+                      </a>
+                    {% endif %}
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>{% translate "ليس لديك صلاحية لعرض أو تعديل أي شيء" %}</p>
+  {% endif %}
+</div>
+{% endblock %}
